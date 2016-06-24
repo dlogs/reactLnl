@@ -1,0 +1,198 @@
+<html>
+  <head>
+    <title>React.js</title>
+    <link rel="stylesheet" href="/css/bundle.css" />
+  </head>
+  <body>
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <h1>React</h1>
+                <div>by David Logsdon</div>
+            </section>
+            <section>
+                <h2>What is React</h2>
+                <div>React is a declarative, component-based javascript library for composing dynamic web pages.</div>
+            </section>
+            <section>
+                <h2>What makes React special?</h2>
+                <ul>
+                    <li>Just the View</li>
+                    <li>Virtual DOM</li>
+                    <li>JSX Syntax</li>
+                    <li>One-way data flow</li>
+                    <li>Plain Javascript</li>
+                    <li>Server-side rendering</li>
+                </ul>
+            </section>
+            <section>
+                <h2>React Components</h2>
+                <ul>
+                    <li>Building blocks</li>
+                    <li>use props and state, implement render()</li>
+                    <li>Built in, Custom built, or 3rd Party</li>
+                </ul>
+                <pre><code data-trim class='javascript'>
+var MyComponent = React.createClass({
+    render() {
+        return (
+            <div>Hello World</div>
+        )
+    }
+});
+ReactDOM.render(&lt;MyComponent /&gt;, document.getElementById('example'))
+                </code></pre>
+            </section>
+            <section>
+                <h2>Props and State</h2>
+                Props - passed into component
+                State - modified by component
+            </section>
+            <section>
+                <h2>JSX</h2>
+                <ul>
+                    <li>HTML-like syntax to make composing components easier</li>
+                    <li>Transpiled via Babel to javascript</li>
+                </ul>
+                <pre><code data-trim class='javascript'>
+// JSX
+return &lt;MyComponent foo='Hello' bar={world} &gt;&lt;div&gt;React!&lt;/div&gt;&lt;/MyComponent&gt;
+                </code></pre>
+                <pre><code data-trim class='javascript'>
+// transpiled Javascript
+return React.createElement(
+    MyComponent, {
+        foo: 'Hello',
+        bar: world
+    }, React.createElement('div', null, 'React!')
+);
+                </code></pre>
+            </section>
+            <section>
+                <h2>React API</h2>
+                <pre><code data-trim class='javascript'>
+ReactElement createElement(
+  string/ReactClass type,
+  [object props],
+  [children ...]
+)
+                </code></pre>
+                <pre><code data-trim class='javascript'>
+return React.createElement(
+    MyComponent,
+    { foo: 'Hello', bar: world },
+    React.createElement('div', null, 'React!')
+);
+                </code></pre>
+            </section>
+            <section>
+                <h2>React DOM</h2>
+                <pre><code data-trim class='javascript'>
+render(
+  ReactElement element,
+  DOMElement container,
+  [function callback]
+)
+                </code></pre>
+                <pre><code data-trim class='javascript'>
+return ReactDOM.render(
+    React.createElement(MyComponent, ...),
+    document.getElementById('example')
+);
+                </code></pre>
+            </section>
+            <section>
+                <h2>Updating State</h2>
+<pre><code data-trim class='javascript'>
+void setState(
+  function|object nextState,
+  [function callback]
+)
+</code></pre>
+            </section>
+            <section>
+                <h3>Controlled Inputs</h3>
+                <pre><code data-trim class='javascript'>
+var MyComponent = React.createClass({
+    onValueChanged(e) {
+        this.setState({
+            value: e.target.value
+        });
+    }
+    render: function() {
+        return (
+            &lt;div&gt;
+                &lt;input type='text'
+                       value={this.state.value}
+                       onChange={this.onValueChanged} /&gt;
+            &lt;/div&gt;
+        );
+    }
+});
+                </code></pre>
+            </section>
+            <section>
+                <h3>Uncontrolled Inputs</h3>
+                <pre><code data-trim class='javascript'>
+var MyComponent = React.createClass({
+    render: function() {
+        return (
+            &lt;div&gt;
+                &lt;input type='text'
+                       defaultValue={this.props.defaultValue} /&gt;
+            &lt;/div&gt;
+        );
+    }
+});
+                </code></pre>
+            </section>
+            <section>
+                <h3>Stateless Components</h3>
+                <pre><code data-trim class='javascript'>
+function Hello(props) {
+    return <div>Hello {props.name}</div>
+}
+                </code></pre>
+            </section>
+            <section>
+                <h3>Example</h3>
+                <p data-height="450" data-theme-id="dark" data-slug-hash="mERRmB" data-default-tab="js,result" data-user="dlogs" data-embed-version="2" class="codepen">See the Pen <a href="http://codepen.io/dlogs/pen/mERRmB/">mERRmB</a> by David (<a href="http://codepen.io/dlogs">@dlogs</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+                <!--<pre><code data-trim class='javascript'>
+function Hello(props) {
+    return <div>Hello {props.name}</div>
+}
+
+var HelloPerson = React.createClass({
+    onValueChanged(e) {
+        this.setState({
+            value: e.target.value
+        });
+    }
+    render: function() {
+        return (
+            &lt;div&gt;
+                &lt;input type='text'
+                       value={this.state.value}
+                       onChange={this.onValueChanged} /&gt;
+                &lt;Hello name={this.state.value} /&gt;
+            &lt;/div&gt;
+        );
+    }
+});
+                </code></pre>-->
+            </section>
+        </div>
+    </div>
+<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+    <script src="/js/head.min.js"></script>
+    <script src="/js/reveal.js"></script>
+    <script>
+    Reveal.initialize({
+        dependencies: [
+            // Syntax highlight for <code> elements
+            { src: '/js/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+        ]
+    });
+    </script>
+  </body>
+</html>

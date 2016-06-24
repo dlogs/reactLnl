@@ -1,0 +1,39 @@
+﻿.epic {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.epic-title {
+    flex: 100%;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.lane {
+    flex: 1;
+    background-color: lightgrey;
+    margin: 5px;
+}
+
+.task {
+    background-color: lightgreen;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 2px;
+    min-height: 50px;
+    padding: 5px;
+}
+.shadow-task {
+    @extend .task;
+}
+
+.sub-task {
+    @extend .task;
+    background-color: yellow;
+}
+
+.task-info {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+

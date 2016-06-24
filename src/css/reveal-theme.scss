@@ -1,0 +1,20 @@
+@import "./node_modules/reveal.js/css/theme/template/settings";
+
+
+$backgroundColor: white;
+$headingTextTransform: none;
+$mainFont: 'Open Sans', sans-serif;
+$headingFontWeight: bold;
+$headingFont: 'Open Sans', sans-serif;
+$mainColor: green;
+$headingColor: green;
+$selectionBackgroundColor: lightgreen;
+$linkColor: seagreen;
+$linkColorHover: lighten( $linkColor, 20% );
+
+$heading1Size: 2.5em;
+$heading2Size: 1.6em;
+$heading3Size: 1.3em;
+$heading4Size: 1.0em;
+
+@import "./node_modules/reveal.js/css/theme/template/theme";
