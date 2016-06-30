@@ -5,7 +5,7 @@ var webpack = require('webpack'),
 
 var app = express();
 
-var webpackConfig = require('./webpack.config')
+var webpackConfig = require('./webpack-hmr.config')
 var webpackBundler = webpack(webpackConfig)
 
 app.use(webpackDevMiddleware(webpackBundler, {
@@ -15,6 +15,7 @@ app.use(webpackDevMiddleware(webpackBundler, {
 app.use(webpackHotMiddleware(webpackBundler));
 
 app.use(express.static('dist'));
+app.use(express.static('static'));
 
 app.listen(3000, function () {
   console.log('listening on port 3000');

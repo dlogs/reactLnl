@@ -1,198 +1,1052 @@
 <html>
-  <head>
-    <title>React.js</title>
-    <link rel="stylesheet" href="/css/bundle.css" />
-  </head>
-  <body>
-    <div class="reveal">
-        <div class="slides">
-            <section>
-                <h1>React</h1>
-                <div>by David Logsdon</div>
-            </section>
-            <section>
-                <h2>What is React</h2>
-                <div>React is a declarative, component-based javascript library for composing dynamic web pages.</div>
-            </section>
-            <section>
-                <h2>What makes React special?</h2>
-                <ul>
-                    <li>Just the View</li>
-                    <li>Virtual DOM</li>
-                    <li>JSX Syntax</li>
-                    <li>One-way data flow</li>
-                    <li>Plain Javascript</li>
-                    <li>Server-side rendering</li>
-                </ul>
-            </section>
-            <section>
-                <h2>React Components</h2>
-                <ul>
-                    <li>Building blocks</li>
-                    <li>use props and state, implement render()</li>
-                    <li>Built in, Custom built, or 3rd Party</li>
-                </ul>
-                <pre><code data-trim class='javascript'>
-var MyComponent = React.createClass({
-    render() {
-        return (
-            <div>Hello World</div>
-        )
-    }
+
+<head>
+  <title>React.js</title>
+  <link rel="stylesheet" href="/css/bundle.css" />
+</head>
+
+<body>
+  <div class="reveal container">
+    <div class="slides">
+      <section>
+        <h1>React.js</h1>
+        <div>David Logsdon</div>
+      </section>
+      <section>
+        <h2>What is React</h2>
+        <div>React is a declarative, component-based JavaScript library for building web UIs.</div>
+      </section>
+      <section>
+        <h2>What makes React special?</h2>
+        <ul>
+          <li class='fragment'>Just the View</li>
+          <li class='fragment'>JSX Syntax</li>
+          <li class='fragment'>One-way data flow</li>
+          <li class='fragment'>Plain JavaScript</li>
+          <li class='fragment'>Virtual DOM</li>
+          <li class='fragment'>Server-side rendering</li>
+        </ul>
+      </section>
+      <section>
+        <h2>React Components</h2>
+        <ul>
+          <li>Use props and state, implement render()</li>
+          <li>Render returns a single React node, but each node can have multiple child nodes</li>
+          <li>Nodes can be Components, strings, numbers, and arrays</li>
+          <li>true, false, and null are rendered as blank</li>
+        </ul>
+        <pre><code data-trim class='javascript'>     
+var HelloWorld = React.createClass({
+  render() {
+    return React.createElement('div', null, 'Hello World');
+  }
 });
-ReactDOM.render(&lt;MyComponent /&gt;, document.getElementById('example'))
-                </code></pre>
-            </section>
-            <section>
-                <h2>Props and State</h2>
-                Props - passed into component
-                State - modified by component
-            </section>
-            <section>
-                <h2>JSX</h2>
-                <ul>
-                    <li>HTML-like syntax to make composing components easier</li>
-                    <li>Transpiled via Babel to javascript</li>
-                </ul>
-                <pre><code data-trim class='javascript'>
-// JSX
-return &lt;MyComponent foo='Hello' bar={world} &gt;&lt;div&gt;React!&lt;/div&gt;&lt;/MyComponent&gt;
-                </code></pre>
-                <pre><code data-trim class='javascript'>
-// transpiled Javascript
-return React.createElement(
-    MyComponent, {
-        foo: 'Hello',
-        bar: world
-    }, React.createElement('div', null, 'React!')
-);
-                </code></pre>
-            </section>
-            <section>
-                <h2>React API</h2>
-                <pre><code data-trim class='javascript'>
+ReactDOM.render(React.createElement(HelloWorld), document.getElementById('example'))
+        </code></pre>
+      </section>
+      <section>
+        <h2>React API</h2>
+        <pre><code data-trim class='javascript'>
 ReactElement createElement(
   string/ReactClass type,
   [object props],
   [children ...]
 )
-                </code></pre>
-                <pre><code data-trim class='javascript'>
+        </code></pre>
+        <pre><code data-trim class='javascript'>
 return React.createElement(
-    MyComponent,
-    { foo: 'Hello', bar: world },
-    React.createElement('div', null, 'React!')
+  MyComponent,
+  { foo: 'Hello', bar: world },
+  React.createElement('div', null, 'React!')
 );
-                </code></pre>
-            </section>
-            <section>
-                <h2>React DOM</h2>
-                <pre><code data-trim class='javascript'>
+        </code></pre>
+      </section>
+      <section>
+        <h2>React DOM</h2>
+        <pre><code data-trim class='javascript'>
 render(
   ReactElement element,
   DOMElement container,
   [function callback]
 )
-                </code></pre>
-                <pre><code data-trim class='javascript'>
+        </code></pre>
+        <pre><code data-trim class='javascript'>
 return ReactDOM.render(
-    React.createElement(MyComponent, ...),
-    document.getElementById('example')
+  React.createElement(MyComponent, ...),
+  document.getElementById('example')
 );
-                </code></pre>
-            </section>
-            <section>
-                <h2>Updating State</h2>
-<pre><code data-trim class='javascript'>
+        </code></pre>
+      </section>
+      <section>
+        <section>
+          <h2>Props</h2>
+          <ul>
+            <li>Passed into component</li>
+            <li>Modified by parent, not component</li>
+            <li>Defaulted to values from getDefaultProps() if not specified</li>
+          </ul>
+          <pre class='fragment'><code data-trim class='javascript'>
+var Hello = React.createClass({
+  getDefaultProps() {
+    return {
+      name: 'no one'
+    };
+  },
+  render() {
+    return React.createElement('div', null, 'Hello ', this.props.name);
+  }
+});
+ReactDOM.render(React.createElement(Hello, { name: 'World' }), document.getElementById('example'))
+          </code></pre>
+        </section>
+        <section>
+          <h2>Props</h2>
+          <h3>Attributes</h3>
+          <ul>
+            <li>Normalized as camel case (maxLength, readOnly, tabIndex)</li>
+            <li>Renamed to avoid JavaScript reserved words (for => htmlFor, class => className)</li>
+            <li>Boolean attributes (disabled, readOnly) only rendered if true</li>
+            <li>Style accepts an object with the keys normalized as camel case</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Props</h2>
+          <h3>Events</h3>
+          <ul>
+            <li>React has sythentic events that match the W3C spec to normalize browser events</li>
+            <li>onChange for inputs fires with every change</li>
+          </ul>
+        </section>
+        <section>
+          <h3>Prop Types</h3>
+          <ul>
+            <li>Stored in propTypes static field</li>
+            <li>Validated by development version of React</li>
+          </ul>
+          <pre class='fragment'><code data-trim class='javascript'>
+var Hello = React.createClass({
+  propTypes: {
+    name: React.PropTypes.string.isRequired
+  },
+  render() {
+    return React.createElement('div', null, 'Hello ', this.props.name);
+  }
+});
+          </code></pre>
+        </section>
+      </section>
+      <section>
+        <h2>JSX</h2>
+        <ul>
+          <li>HTML-like syntax to make composing components easier</li>
+          <li>Transpiled via Babel to JavaScript</li>
+          <li>Embed variable using curly braces</li>
+        </ul>
+        <div class='row'>
+          <pre class='five columns'><code data-trim class='javascript'>
+  // JSX
+  let coolText = 'Look at this cool text';
+  return (
+    &lt;MyComponent foo='Hello' bar={world}&gt;
+      {coolText}
+      &lt;div&gt;React!&lt;/div&gt;
+    &lt;/MyComponent&gt;
+  );
+          </code></pre>
+          <div class='two columns'>
+            <h1 style='padding-top: 1em;'>=</h1>
+          </div>
+          <pre class='five columns'><code data-trim class='javascript'>
+  // transpiled JavaScript
+  let coolText = 'Look at this cool text';
+  return React.createElement(
+    MyComponent, {
+      foo: 'Hello',
+      bar: world
+    },
+    coolText,
+    React.createElement('div', null, 'React!')
+  );
+          </code></pre>
+        </div>
+      </section>
+      <section>
+        <section>
+          <h2>State</h2>
+            <ul>
+              <li>Initialized to value returned by getInitialState()</li>
+              <li>Modified by component via setState()</li>
+              <li>Contains minimal data needed to rerender UI</li>
+              <li>Never change this.state directly</li>
+            </ul>
+        </section>
+        <section>
+          <h3>State Example</h3>
+          <div class='row'>
+            <div class='eight columns'>
+              <pre><code data-trim class='javascript'>
+  var ToggleHello = React.createClass({
+    getInitialState() {
+      return { name: 'World' };
+    },
+    toggleClicked() {
+      this.setState({
+        name: this.state.name === 'World' ? 'Everyone' : 'World'
+      });
+    },
+    render() {
+      return (
+        &lt;div&gt;
+          &lt;button type='button'
+            onClick={this.toggleClicked}&gt;
+              Toggle
+          &lt;/button&gt;
+          &lt;Hello name={this.state.name} /&gt;
+        &lt;/div&gt;
+      );
+    }
+  })
+  var Hello = React.createClass({
+    render() {
+      return (
+        &lt;div&gt;Hello {this.props.name}&lt;/div&gt;
+      )
+    }
+  });
+              </code></pre>
+            </div>
+            <iframe class='four columns example' srcdoc='<html><head><link rel="stylesheet" href="/css/bootstrap.css" /></head><body><div id="stateEx"></div><script src="/js/examples.js"></script></body></html>' id='updatePerfEx'>
+            </iframe>
+          </div>
+        </section>
+        <section>
+          <h3>setState</h3>
+          <pre><code data-trim class='javascript'>
 void setState(
   function|object nextState,
   [function callback]
 )
-</code></pre>
-            </section>
-            <section>
-                <h3>Controlled Inputs</h3>
-                <pre><code data-trim class='javascript'>
-var MyComponent = React.createClass({
-    onValueChanged(e) {
-        this.setState({
-            value: e.target.value
-        });
-    }
-    render: function() {
-        return (
-            &lt;div&gt;
-                &lt;input type='text'
-                       value={this.state.value}
-                       onChange={this.onValueChanged} /&gt;
-            &lt;/div&gt;
-        );
-    }
-});
-                </code></pre>
-            </section>
-            <section>
-                <h3>Uncontrolled Inputs</h3>
-                <pre><code data-trim class='javascript'>
-var MyComponent = React.createClass({
-    render: function() {
-        return (
-            &lt;div&gt;
-                &lt;input type='text'
-                       defaultValue={this.props.defaultValue} /&gt;
-            &lt;/div&gt;
-        );
-    }
-});
-                </code></pre>
-            </section>
-            <section>
-                <h3>Stateless Components</h3>
-                <pre><code data-trim class='javascript'>
-function Hello(props) {
-    return <div>Hello {props.name}</div>
+          </code></pre>
+          <ul>
+            <li>Merges parameter into current state</li>
+            <li>Triggers a rerender</li>
+          </ul>
+          <div class='fragment'>
+            <pre><code data-trim class='javascript'>
+// naive implementation
+function setState(nextState, callback) {
+  this.state = Object.assign({}, this.state, nextState);
+  this.updateHtml(this.render());
+  if(callback) callback(this.state, this.props);
 }
-                </code></pre>
-            </section>
-            <section>
-                <h3>Example</h3>
-                <p data-height="450" data-theme-id="dark" data-slug-hash="mERRmB" data-default-tab="js,result" data-user="dlogs" data-embed-version="2" class="codepen">See the Pen <a href="http://codepen.io/dlogs/pen/mERRmB/">mERRmB</a> by David (<a href="http://codepen.io/dlogs">@dlogs</a>) on <a href="http://codepen.io">CodePen</a>.</p>
-                <!--<pre><code data-trim class='javascript'>
+            </code></pre>
+          </div>
+        </section>
+      </section>
+      <section>
+        <h2>Stateless Components</h2>
+        <ul>
+          <li>No state or component lifecycle methods</li>
+          <li>PropTypes can be set on the function itself</li>
+        </ul>
+        <pre><code data-trim class='javascript'>
 function Hello(props) {
-    return <div>Hello {props.name}</div>
+  return <div>Hello {props.name}</div>
+}
+Hello.propTypes = {
+  name: React.PropTypes.string.isRequired
+};
+        </code></pre>
+      </section>
+      <section>
+        <section>
+          <h2>Form Controls</h2>
+          <h3>Uncontrolled Inputs</h3>
+          Control's value is not stored in state
+          <br />
+          <br />
+          <h3>Controlled Input</h3>
+          Control's value is always stored in state
+        </section>
+        <section>
+          <h2>Uncontrolled Input</h2>
+          <pre><code data-trim class='javascript'>
+var MyComponent = React.createClass({
+  render: function() {
+    return (
+      &lt;div&gt;
+        &lt;input type='text'
+          defaultValue={this.props.initialValue} /&gt;
+      &lt;/div&gt;
+    );
+  }
+});
+          </code></pre>
+        </section>
+        <section>
+          <h2>Controlled Inputs</h2>
+          <pre><code data-trim class='javascript'>
+var MyComponent = React.createClass({
+  getInitialState() {
+    return {
+      value: this.props.initialValue
+    };
+  },
+  onValueChanged(e) {
+    this.setState({
+      value: e.target.value
+    });
+  },
+  render: function() {
+    return (
+      &lt;div&gt;
+        &lt;input type='text'
+          value={this.state.value}
+          onChange={this.onValueChanged} /&gt;
+      &lt;/div&gt;
+    );
+  }
+});
+          </code></pre>
+        </section>
+      </section>
+      <section>
+        <section>
+          <h2>Data Flow</h2>
+          <img class='plain' src='/images/DataFlow.png' />
+        </section>
+        <section>
+          <h3>Data Flow</h3>
+          <div class='row'>
+            <div class='eight columns'>
+              <pre><code data-trim class='javascript'>
+function Hello(props) {
+  if (props.name) {
+    return &lt;div&gt;Hello {props.name}&lt;/div&gt;
+  }
+  return false;
+}
+
+function NameInput(props) {
+  return (
+    &lt;div&gt;
+      &lt;label&gt;Name&lt;/label&gt;
+      &lt;input type='text'
+             value={props.name}
+             onChange={(e) =&gt; props.nameChanged(e.target.value)} /&gt;
+    &lt;/div&gt;
+    );
 }
 
 var HelloPerson = React.createClass({
-    onValueChanged(e) {
-        this.setState({
-            value: e.target.value
-        });
-    }
-    render: function() {
-        return (
-            &lt;div&gt;
-                &lt;input type='text'
-                       value={this.state.value}
-                       onChange={this.onValueChanged} /&gt;
-                &lt;Hello name={this.state.value} /&gt;
-            &lt;/div&gt;
-        );
-    }
-});
-                </code></pre>-->
-            </section>
-        </div>
-    </div>
-<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
-    <script src="/js/head.min.js"></script>
-    <script src="/js/reveal.js"></script>
-    <script>
-    Reveal.initialize({
-        dependencies: [
-            // Syntax highlight for <code> elements
-            { src: '/js/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-        ]
+  getInitialState() {
+    return { name: '' };
+  },
+  nameChanged(name) {
+    this.setState({
+      name: name
     });
+  },
+  render: function() {
+    return (
+      &lt;div&gt;
+        &lt;NameInput type='text'
+          name={this.state.name}
+          nameChanged={this.nameChanged} /&gt;
+        &lt;Hello name={this.state.name} /&gt;
+      &lt;/div&gt;
+    );
+  }
+});
+            </code></pre>
+          </div>
+            <iframe class='four columns example' style='height: 200px;' srcdoc='<html><head><link rel="stylesheet" href="/css/bootstrap.css" /></head><body><div id="updateEx"></div><script src="/js/examples.js"></script></body></html>' id='updatePerfEx'>
+            </iframe>
+            <img class='plain' src='/images/DataFlowExample.png' />
+          </div>
+        </section>
+      </section>
+      <section>
+        <section>
+          <h2>If-Else in JSX</h2>
+          Procedural logic is not valid in JSX because the expression has to have a value
+          <div class='row'>
+            <pre class='six columns'><code data-trim class='javascript'>
+  // this does not work
+  return (
+    &lt;div&gt;
+      {if (condition) &lt;div&gt;Fancy Stuff&lt;/div&gt;}
+    &lt;/div&gt;
+  )
+  // because it is traslated to this
+  return (
+    React.createElement('div',
+      null,
+      if (condition)
+        React.createElement('div', null, 'Fancy Stuff')
+    )
+  )
+            </code></pre>
+            <pre class='six columns'><code data-trim class="javascript">
+  // this does work
+  return (
+    &lt;div&gt;{condition ? &lt;div&gt;Fancy Stuff&lt;/div&gt; : null}&lt;/div&gt;
+  )
+            </code></pre>
+          </div>
+        </section>
+        <section>
+          <h3>If-Else in JSX</h3>
+            <div class='row'>
+              <div class='eight columns'>
+                <pre><code data-trim class='javascript'>
+var MessageDisplay = React.createClass({
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;TernaryMessageDisplay {...this.props} /&gt;
+        &lt;VariableMessageDisplay {...this.props} /&gt;
+        &lt;IifeMessageDisplay {...this.props} /&gt;
+        &lt;MethodMessageDisplay {...this.props} /&gt;
+      &lt;/div&gt;
+    );
+  }
+});
+
+var TernaryMessageDisplay = React.createClass({
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;label&gt;Ternary:&lt;/label&gt;
+        {this.props.hasError
+          ? 'Error!'
+          : this.props.hasWarning
+            ? 'Warning!'
+            : 'All Clear!'}
+      &lt;/div&gt;
+    );
+  }
+});
+
+var VariableMessageDisplay = React.createClass({
+  render() {
+    let message;
+    if (this.props.hasError) {
+      message = 'Error!';
+    } else if (this.props.hasWarning) {
+      message = 'Warning!';
+    } else {
+      message = 'All Clear!';
+    }
+    
+    return (
+      &lt;div&gt;
+        &lt;label&gt;Variable:&lt;/label&gt;
+        {message}
+      &lt;/div&gt;
+    );
+  }
+});
+
+var IifeMessageDisplay = React.createClass({
+  render() {
+    return (
+        &lt;div&gt;
+          &lt;label&gt;IIFE:&lt;/label&gt;
+          {(() =&gt; {
+            if (this.props.hasError) {
+              return 'Error!';
+            } else if (this.props.hasWarning) {
+              return 'Warning!';
+            } else {
+              return 'All Clear!';
+            }
+          })()}
+        &lt;/div&gt;
+    );
+  }
+});
+
+var MethodMessageDisplay = React.createClass({
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;label&gt;Separate Method:&lt;/label&gt;
+        {this.renderMessage()}
+      &lt;/div&gt;
+    );
+  },
+  renderMessage() {
+    if (this.props.hasError) {
+      return 'Error!';
+    } else if (this.props.hasWarning) {
+      return 'Warning!';
+    } else {
+      return 'All Clear!';
+    }
+  }
+});
+
+var IfElse = React.createClass({
+  getInitialState() {
+    return { hasWarning: false, hasError: false};
+  },
+  onWarningChange(e) {
+    this.setState({ hasWarning: e.target.checked });
+  },
+  onErrorChange(e) {
+    this.setState({ hasError: e.target.checked })
+  },
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;div&gt;
+          &lt;div className='checkbox'&gt;
+            &lt;label&gt;
+              &lt;input type='checkbox'
+                checked={this.state.hasWarning}
+                onChange={this.onWarningChange} /&gt;
+              Warning
+            &lt;/label&gt;
+          &lt;/div&gt;
+          &lt;div className='checkbox'&gt;
+            &lt;label&gt;
+              &lt;input type='checkbox'
+                checked={this.state.hasError}
+                onChange={this.onErrorChange} /&gt;
+              Error
+            &lt;/label&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;MessageDisplay hasWarning={this.state.hasWarning}
+          hasError={this.state.hasError} /&gt;
+      &lt;/div&gt;
+    );
+  }
+});
+                </code></pre>
+              </div>
+              <iframe class='four columns example' srcdoc='<html><head><link rel="stylesheet" href="/css/bootstrap.css" /></head><body><div id="ifElseEx"></div><script src="/js/examples.js"></script></body></html>' id='updatePerfEx'>
+              </iframe>
+            </div>
+        </section>
+      </section>
+      <section>
+        <section>
+          <h2>Rendering Arrays</h2>
+          <ul>
+            <li>Array.prototype.map() to translate array into elements</li>
+            <ul>
+              <li>Same as LINQ's Select</li>
+            </ul>
+            <li>"key" prop identifies element for rerenders</li>
+          </ul>
+          <div class='row fragment'>
+            <pre class='six columns'><code data-trim class='javascript'>
+[{ foo: 'a', bar: 10 },
+  { foo: 'b', bar: 5 },
+  { foo: 'c', bar: 15 }]
+    .map(x => &lt;div key={x.foo}&gt;{x.foo}: {x.bar}&lt;/div&gt;)
+            </code></pre>
+            <pre class='six columns'><code data-trim class='javascript'>
+[&lt;div key='a'&gt;a: 10&lt;/div&gt;,
+  &lt;div key='b'&gt;b: 5&lt;/div&gt;,
+  &lt;div key='c'&gt;c: 10&lt;/div&gt;]
+            </code></pre>
+          </div>
+        </section>
+        <section>
+          <h3>Arrays</h3>
+          <div class='row'>
+            <div class='eight columns'>
+              <pre><code data-trim class='javascript'>
+function CharacterCount(character) {
+    this.character = character;
+    this.count = 1;
+}
+
+function CharactersTable(props) {
+  if (!props.stringValue) {
+    return false
+  }
+  var characterCounts = getCharacterCountsInString(props.stringValue);
+  return (
+    &lt;table&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th&gt;Character&lt;/th&gt;
+          &lt;th&gt;Count&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+          {characterCounts.map(cc =&gt;
+            &lt;tr key={cc.character}&gt;
+              &lt;td&gt;{cc.character}&lt;/td&gt;
+              &lt;td&gt;{cc.count}&lt;/td&gt;
+            &lt;/tr&gt;
+          )}
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  );
+}
+
+function ValueInput(props) {
+  return (
+    &lt;div&gt;
+      &lt;input type='text'
+             value={props.value}
+             onChange={(e) =&gt; props.valueChanged(e.target.value)} /&gt;
+      &lt;button type='button' onClick={() =&gt; props.valueChanged('')}&gt;
+        Clear
+      &lt;/button&gt;
+    &lt;/div&gt;
+    );
+}
+
+var CharacterCounter = React.createClass({
+  getInitialState() {
+    return { value: '' };
+  },
+  valueChanged(value) {
+    this.setState({
+      value: value
+    });
+  },
+  render: function() {
+    return (
+      &lt;div&gt;
+        &lt;ValueInput type='text'
+          value={this.state.value}
+          valueChanged={this.valueChanged} /&gt;
+        &lt;CharactersTable stringValue={this.state.value} /&gt;
+      &lt;/div&gt;
+    );
+  }
+});
+
+function getCharacterCountsInString(value) {
+  let characterCounts = [];
+  for (let i = 0; i &lt; value.length; i++) {
+    let char = value.charAt(i);
+    let charCount = characterCounts.find(cc =&gt; cc.character === char);
+    if (charCount) {
+      charCount.count++;
+    } else {
+      characterCounts.push(new CharacterCount(char));
+    }
+  }
+  characterCounts.sort((left, right) =&gt; left.character &lt; right.character
+    ? -1
+    : left.character &gt; right.character ? 1 : 0);
+  return characterCounts;
+}
+              </code></pre>
+            </div>
+            <iframe class='four columns example' srcdoc='<html><head><link rel="stylesheet" href="/css/bootstrap.css" /></head><body><div id="arrayEx"></div><script src="/js/examples.js"></script></body></html>' id='updatePerfEx'>
+            </iframe>
+          </div>
+        </section>
+      </section>
+      <section>
+        <section>
+          <h2>Element References</h2>
+          <ul>
+            <li>"ref" prop allows a component to get a reference to a child</li>
+            <ul>
+              <li>string - accessible via to this.refs[value]</li>
+              <li>function - called with element as parameter to be stored locally</li>
+            </ul>
+            <li>Reference will be the actual React element or the actual DOM element</li>
+            <li>Stateless components cannot be references</li>
+          </ul>
+        </section>
+        <section>
+          <h3>Refs</h3>
+          <div class='row'>
+            <div class='eight columns'>
+              <pre><code data-trim class='javascript'>
+var NameInput = React.createClass({
+  addClicked() {
+    if (this.refs.input.value !== '') {
+      this.props.addName(this.refs.input.value);
+      this.refs.input.value = ''; 
+    }
+  },
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;input type='text'
+          ref='input' /&gt;
+        &lt;button type='button'
+          onClick={this.addClicked}
+          className='button-primary'&gt;
+          Add
+        &lt;/button&gt;
+      &lt;/div&gt;
+    );
+  }
+});
+
+var NameTable = React.createClass({
+  focusNameValue(name) {
+    let valueInput = this._valueInputs[name];
+    valueInput.focus();
+    valueInput.select();
+  },
+  render() {
+    this._valueInputs = {};
+    return (
+      &lt;table&gt;
+        &lt;thead&gt;
+          &lt;tr&gt;
+            &lt;th&gt;Name&lt;/th&gt;
+            &lt;th&gt;Value&lt;/th&gt;
+          &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+          {this.props.people.map(p =&gt;
+            &lt;tr key={p.name}&gt;
+              &lt;td&gt;{p.name}&lt;/td&gt;
+              &lt;td&gt;
+                &lt;input type='text'
+                  ref={c =&gt; this._valueInputs[p.name] = c} /&gt;
+              &lt;/td&gt;
+            &lt;/tr&gt;
+          )}
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    );
+  }
+});
+
+var NameList = React.createClass({
+  getInitialState() {
+    return { people: [] };
+  },
+  addName(name) {
+    if (this.state.people.some(p =&gt; p.name === name)) {
+      this.focusNameValue(name);
+      return;
+    }
+    this.setState({
+      people: this.state.people.concat([{ name: name }])
+    });
+  },
+  focusNameValue(name) {
+    this._nameTable.focusNameValue(name);
+  },
+  render: function() {
+    return (
+      &lt;div&gt;
+        &lt;NameInput type='text'
+          addName={this.addName} /&gt;
+        &lt;NameTable people={this.state.people}
+          ref={c =&gt; this._nameTable = c} /&gt;
+      &lt;/div&gt;
+    );
+  }
+});
+              </code></pre>
+            </div>
+            <iframe class='four columns example' srcdoc='<html><head><link rel="stylesheet" href="/css/bootstrap.css" /></head><body><div id="refEx"></div><script src="/js/examples.js"></script></body></html>'>
+            </iframe>
+          </div>
+        </section>
+      </section>
+      <section>
+        <h3>Child Components</h3>
+        Exposed as this.props.children
+          <div class='row'>
+            <div class='eight columns'>
+              <pre><code data-trim class='javascript'>
+var HasChildren = React.createClass({
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;Panel panelType='warning' heading='Head'&gt;
+          &lt;div&gt;Child in panel body&lt;/div&gt;
+          &lt;div&gt;Another child&lt;/div&gt;
+        &lt;/Panel&gt;
+      &lt;/div&gt;
+    );
+  }
+});
+
+var Panel = React.createClass({
+  propTypes: {
+    panelType: React.PropTypes.string,
+    heading: React.PropTypes.node
+  },
+  getDefaultProps() {
+    return {
+      panelType: 'default'
+    }
+  },
+  render() {
+    return (
+      &lt;div className={'panel panel-' + this.props.panelType}&gt;
+        {this.props.heading
+          ? &lt;div className='panel-heading'&gt;{this.props.heading}&lt;/div&gt;
+          : false}
+        &lt;div className='panel-body'&gt;
+          {this.props.children}
+        &lt;/div&gt;
+      &lt;/div&gt;
+    );
+  }
+});
+              </code></pre>
+            </div>
+            <iframe class='four columns example' srcdoc='<html><head><link rel="stylesheet" href="/css/bootstrap.css" /></head><body><div id="childrenEx"></div><script src="/js/examples.js"></script></body></html>' id='updatePerfEx'>
+            </iframe>
+          </div>
+      </section>
+      <section>
+        <h3>Improving Performance</h3>
+          <div class='row'>
+            <div class='eight columns'>
+              <pre><code data-trim class='javascript'>
+var SquareLine = React.createClass({
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.props.value !== nextProps.value;
+  },
+  render() {
+    const valueAsNumber = parseFloat(this.props.value);
+    return (
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;input type='number'
+            value={this.props.value}
+            onChange={(e) =&gt; this.props.updateValue(e.target.value)} /&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+            {valueAsNumber * valueAsNumber}
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    );
+  }
+});
+
+var SquareCalculator = React.createClass({
+  getInitialState() {
+    return { numbers: [], nextId: 1 };
+  },
+  addNumber() {
+    this.setState({
+      numbers: this.state.numbers.concat([{
+        id: this.state.nextId,
+        value: '0'
+      }]),
+      nextId: this.state.nextId + 1
+    });
+  },
+  updateValue(id, value) {
+    this.setState({
+      numbers: this.state.numbers
+        .map(n =&gt; n.id === id
+             ? { id: id, value: value }
+             : n)
+    });
+  },
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;table&gt;
+          &lt;thead&gt;
+            &lt;tr&gt;
+              &lt;th&gt;Number&lt;/th&gt;
+              &lt;th&gt;Square&lt;/th&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody&gt;
+            {this.state.numbers.map(n =&gt; 
+              &lt;SquareLine key={n.id}
+                value={n.value}
+                updateValue={value =&gt; this.updateValue(n.id, value)} /&gt;
+            )}
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+        &lt;button type='button'
+          className='button-primary'
+          onClick={() =&gt; this.addNumber()}&gt;
+          Add
+        &lt;/button&gt;
+      &lt;/div&gt;
+    );
+  }
+});
+              </code></pre>
+            </div>
+            <iframe class='four columns example' srcdoc='<html><head><link rel="stylesheet" href="/css/bootstrap.css" /></head><body><div id="updatePerfEx"></div><script src="/js/examples.js"></script></body></html>' id='updatePerfEx'>
+            </iframe>
+          </div>
+      </section>
+      <section>
+        <section>
+          <h2>Component Lifecycle</h2>
+          <h3>Mounting</h3>
+          <ol>
+            <li>getDefaultProps</li>
+            <li>getInitialState</li>
+            <li>componentWillMount</li>
+            <li>render</li>
+            <li>componentDidMount</li>
+          </ol>
+          <h3>Umounting</h3>
+          <ol>
+            <li>componentWillUnmount</li>
+          </ol>
+        </section>
+        <section>
+          <h2>Component Lifecycle</h2>
+          <h3>Updating</h3>
+          <ol>
+            <li>componentWillRecieveProps</li>
+            <li>shouldComponentUpdate</li>
+            <li>componentWillUpdate</li>
+            <li>render</li>
+            <li>componentDidUpdate</li>
+          </ol>
+        </section>
+      </section>
+      <section>
+        <h2>JQuery</h2>
+        <pre><code data-trim class='javascript'>
+var JQueryUsingComponent = React.createClass({
+  componentDidMount() {
+    $(this._element).myAwesomePlugin();
+  },
+  render() {
+    return &lt;div ref={c =&gt; this._element = c} /&gt;
+  }
+});
+        </code></pre>
+      </section>
+      <section>
+        <h2>Compiling JSX</h2>
+        <ul>
+          <li>Compiled using Babel</li>
+          <ul>
+            <li>Webpack</li>
+            <li>Gulp/Grunt/CLI</li>
+            <li>ReactJS.Net</li>
+            <li>In Browser</li>
+          </ul>
+          <li>JSX Transformer no longer used</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Server-side Rendering</h3>
+        <pre><code data-trim class='javascript'>
+        string renderToString(ReactElement element)
+        </code></pre>
+        <pre><code data-trim class='javascript'>
+        ReactDOMServer.renderToString(React.createElement(MyComponent))
+        </code></pre>
+        <pre class='fragment'><code data-trim class="handlebars">
+&lt;div id='example'&gt;
+  {{{
+    ReactDOMServer.renderToString(React.createElement(Hello, { name: 'World' }))
+  }}}
+&lt;/div&gt;
+...
+&lt;script&gt;
+  ReactDOM.render(React.createElement(Hello, { name: 'World' }), document.getElementById('example'))
+&lt;/script&gt;
+        </code></pre>
+      </section>
+      <section>
+        <h2>ReactJS.Net</h2>
+        <ul>
+          <li>JSX compilation</li>
+          <li>Generate call to ReactDOM.render (for client)</li>
+          <li>Render component server-side and add to host element</li>
+        </ul>
+        <pre class='fragment'><code>
+&lt;div&gt;Some stuff&lt;/div&gt;
+@Html.React("Components.Hello", new { Name: "World" })
+&lt;div&gt;More stuff&lt;/div&gt;
+        </code></pre>
+      </section>
+      <section>
+        <section>
+          <h2>Related Libraries</h2>
+        </section>
+        <section>
+          <h3>React-Router</h3>
+            <pre><code data-trim class='javascript'>
+render((
+  <Router history={browserHistory}>
+    <Route path="/" component={App}>
+      <Route path="about" component={About}/>
+      <Route path="users" component={Users}>
+        <Route path="/user/:userId" component={User}/>
+      </Route>
+      <Route path="*" component={NoMatch}/>
+    </Route>
+  </Router>
+), document.getElementById('root'))
+          </code></pre>
+          <small>From <a href='https://github.com/reactjs/react-router'>https://github.com/reactjs/react-router</a></small>
+        </section>
+        <section>
+          <h3>Flux</h3>
+          <figure class='text-align: left'>
+            <img class='plain' src='/images/FluxSimpleDiagram.png' />
+            <figcaption><small>From <a href='https://facebook.github.io/flux/docs/overview.html'>https://facebook.github.io/flux/docs/overview.html</a></small></figcaption>
+          </figure>
+        </section>
+        <section>
+          <h3>Redux</h3>
+          <figure class='text-align: left'>
+            <img class='plain' src='/images/ReduxDiagram.svg' />
+            <figcaption><small>From <a href='https://css-tricks.com/learning-react-redux/'>https://css-tricks.com/learning-react-redux/</a></small></figcaption>
+          </figure>
+        </section>
+        <section>
+          <h3>Immutable.js</h3>
+          <ul>
+            <li>Library of immutable types</li>
+            <li>Every methed returns a new object with the specified mutations</li>
+            <pre><code data-trim class='javascript'>
+let list1 = Immutable.List(['a', 'b']);
+let list2 = list1.push('c');
+// list1: ['a', 'b']
+// list2: ['a', 'b', 'c']
+            </code></pre>
+            <pre><code data-trim class='javascript'>
+let map1 = Immutable.Map({ foo: 'a', bar: 'b' });
+let map2 = map1.set('foo', 'c');
+// map1.get('foo'): 'a'
+// map2.get('foo'): 'c'
+            </code></pre>
+          </ul>
+        </section>
+      </section>
+      <section>
+        <h3>References</h3>
+        <ul>
+          <li>React: https://facebook.github.io/react/</li>
+          <li>React-Router: https://github.com/reactjs/react-router</li>
+          <li>Flux Overview: https://facebook.github.io/flux/docs/overview.html</li>
+          <li>Redux Tutorial: https://css-tricks.com/learning-react-redux/</li>
+          <li>ImmutableJS: https://facebook.github.io/immutable-js/</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+  <script src="//assets.codepen.io/assets/embed/ei.js"></script>
+  <script src="/js/head.min.js"></script>
+  <script src="/js/reveal.js"></script>
+  <script>
+  Reveal.initialize({
+    width: '100%',
+    dependencies: [
+      // Syntax highlight for <code> elements
+      { src: '/js/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+    ]
+  });
     </script>
-  </body>
+</body>
+
 </html>
