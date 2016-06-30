@@ -13,3 +13,5 @@ npm install
 gulp build
 npm start
 ```
+
+Navigate to localhost:3000/slides.html
