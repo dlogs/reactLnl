@@ -4,7 +4,7 @@ Requires npm, node, and gulp
 
 To install gulp
 ```
-npm install --global gulp-cli`
+npm install --global gulp-cli
 ```
 
 To build and run, run the following in the directory:
